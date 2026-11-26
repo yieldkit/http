@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# Cancel superseded PR runs only: every commit on main keeps its CI run, which releases depend on.
+# A push gets a group of its own, since a queued run in a shared group is cancelled by the next one.
+concurrency:
+  group: ci-${{ github.event_name == 'pull_request' && github.ref || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  check:
+    name: Check (${{ matrix.os }}, Node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            node: '22.19.0'
+          - os: ubuntu-latest
+            node: '24'
+          - os: ubuntu-latest
+            node: '26'
+          - os: macos-latest
+            node: '26'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+        with:
+          version: 12.23.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: 1.4.5 # keep in sync with BUN_VERSION in publish.yml; the package smoke test runs on Bun too
+      - run: pnpm install --frozen-lockfile
+      - name: Format, lint and type checks
+        if: matrix.os == 'ubuntu-latest' && matrix.node == '26'
+        run: pnpm check
+      - run: pnpm test
+      - name: Build and pack the npm package
+        run: pnpm pack --out "$RUNNER_TEMP/http.tgz"
+      - name: Test the installed package
+        run: pnpm test:package "$RUNNER_TEMP/http.tgz"
+      - name: Verify checks leave the checkout clean
+        run: |
+          git diff --exit-code
+          test -z "$(git ls-files --others --exclude-standard)"

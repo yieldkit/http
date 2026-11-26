@@ -1,0 +1,25 @@
+name: Feature request
+description: Propose a new policy option, request method, entry point or change in behaviour.
+title: 'feat: '
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Which upstream behaviour do you need to handle, and what gets in the way today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: The API or behaviour you have in mind, with a code sample.
+      render: ts
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Effect's `HttpClient` combinators, options of this package or other workarounds you considered.

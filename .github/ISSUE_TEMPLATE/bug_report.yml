@@ -1,0 +1,48 @@
+name: Bug report
+description: A request is retried, cached, redirected or refused wrongly, a credential shows up in an error or span, or a call fails or hangs.
+title: 'bug: '
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: '@yieldkit/http version'
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: effect
+    attributes:
+      label: effect version
+      placeholder: 4.1.6
+    validations:
+      required: true
+  - type: input
+    id: runtime
+    attributes:
+      label: Runtime and transport
+      description: Node or Bun version, and the `HttpClient` layer you provide (`@yieldkit/http/node`, `@yieldkit/http/bun`, `FetchHttpClient.layer` or your own).
+      placeholder: Node 24.11.0, @yieldkit/http/node
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: The smallest program that shows the problem, with the client policy and the responses the upstream sends (a stub `HttpClient` is ideal). Use made-up hosts and secrets.
+      render: ts
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: The error, its outcome label, or the requests that were sent.
+    validations:
+      required: true

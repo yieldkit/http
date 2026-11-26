@@ -1,0 +1,95 @@
+{
+  "name": "@yieldkit/http",
+  "version": "0.1.0",
+  "description": "Resilient outbound HTTP for Effect: retries, rate limits, circuit breaking, ETag caching, an SSRF guard and credential redaction on Effect's HttpClient.",
+  "keywords": [
+    "circuit-breaker",
+    "effect",
+    "effect-ts",
+    "etag",
+    "http-client",
+    "rate-limit",
+    "retry",
+    "ssrf"
+  ],
+  "homepage": "https://github.com/yieldkit/http#readme",
+  "bugs": "https://github.com/yieldkit/http/issues",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yieldkit/http.git"
+  },
+  "files": [
+    "dist",
+    "docs",
+    "LICENSE",
+    "README.md"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./bun": {
+      "types": "./dist/bun.d.ts",
+      "default": "./dist/bun.js"
+    },
+    "./node": {
+      "types": "./dist/node.d.ts",
+      "default": "./dist/node.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vp pack",
+    "check": "effect-tsgo vp check",
+    "lint:fix": "effect-tsgo vp check --fix",
+    "prepack": "vp pack",
+    "prepare": "vp config",
+    "ready": "pnpm check && vp test",
+    "test": "vp test",
+    "test:package": "node scripts/package-smoke.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@yieldkit/logger": "catalog:"
+  },
+  "devDependencies": {
+    "@effect/platform-bun": "catalog:",
+    "@effect/platform-node": "catalog:",
+    "@effect/tsgo": "catalog:",
+    "@types/node": "catalog:",
+    "@yieldkit/oxlint-config": "catalog:",
+    "effect": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "peerDependencies": {
+    "@effect/platform-bun": "~4.1.6",
+    "@effect/platform-node": "~4.1.6",
+    "effect": "~4.1.6"
+  },
+  "peerDependenciesMeta": {
+    "@effect/platform-bun": {
+      "optional": true
+    },
+    "@effect/platform-node": {
+      "optional": true
+    }
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.23.0",
+      "onFail": "download"
+    }
+  },
+  "engines": {
+    "node": "^22.19.0 || ^24.11.0 || >=26.0.0"
+  }
+}
