@@ -330,12 +330,18 @@ const options = {
 };
 
 /**
+ * The Node binary for the Node runs. Under Bun (CI's Bun job runs this script with it),
+ * `process.execPath` is Bun, so the Node runs use the `node` on the `PATH` instead.
+ */
+const node = process.versions.bun === undefined ? process.execPath : 'node';
+
+/**
  * Whether Bun is on the `PATH`. CI installs it; a local run without it skips the Bun runs.
  */
 const hasBun = spawnSync('bun', ['--version'], { stdio: 'ignore' }).status === 0;
 
 // Node strips the types of a file outside `node_modules`, so the fixtures run as written.
-execFileSync(process.execPath, ['base.ts'], options);
+execFileSync(node, ['base.ts'], options);
 if (hasBun) {
   execFileSync('bun', ['base.ts'], options);
 }
@@ -366,7 +372,7 @@ execFileSync(
   options,
 );
 
-execFileSync(process.execPath, ['node.ts'], options);
+execFileSync(node, ['node.ts'], options);
 // `node` runs on Node only: Bun swaps Undici for a stub without a dispatcher.
 if (hasBun) {
   execFileSync('bun', ['bun.ts'], options);

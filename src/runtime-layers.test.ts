@@ -142,10 +142,21 @@ const localClient = (options: { readonly publicAddressesOnly?: boolean } = {}) =
     publicAddressesOnly: options.publicAddressesOnly ?? false,
   });
 
-const RUNTIME_LAYERS = [
-  ['node', NodeResilientHttpLive],
-  ['bun', BunResilientHttpLive],
-] as const;
+/**
+ * Whether the tests run on Bun, which replaces Undici with a stub without a dispatcher, so the Node
+ * layer fails there with a transport error by design (see docs/layers.md).
+ */
+const onBun = process.versions.bun !== undefined;
+
+/**
+ * The runtime layers to test on the current runtime: both on Node, only the Bun layer on Bun.
+ */
+const RUNTIME_LAYERS = (
+  [
+    ['node', NodeResilientHttpLive],
+    ['bun', BunResilientHttpLive],
+  ] as const
+).filter(([name]) => !onBun || name === 'bun');
 
 describe.each(RUNTIME_LAYERS)('ResilientHttpLive (%s) over a real socket', (name, live) => {
   const run = <A, E>(effect: Effect.Effect<A, E, Layer.Success<typeof live>>) =>
@@ -472,7 +483,8 @@ const runOnNode = <A, E>(
   effect: Effect.Effect<A, E, Layer.Success<typeof NodeResilientHttpLive>>,
 ) => Effect.runPromiseExit(Effect.provide(effect, NodeResilientHttpLive));
 
-describe('ResilientHttpLive (node) response bodies', () => {
+// Undici is a stub on Bun, so the Node layer only runs on Node.
+describe.skipIf(onBun)('ResilientHttpLive (node) response bodies', () => {
   it('keeps a Set-Cookie header Effect cannot write back instead of failing', async () => {
     const server = await startTrackedServer(bodyHandler({ count: 0 }));
     const exit = await runOnNode(

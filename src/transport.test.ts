@@ -42,26 +42,30 @@ const failingFetch: typeof globalThis.fetch = () =>
   Promise.reject(new Error('connect ECONNREFUSED for https://h.example/share?token=SECRET_T'));
 
 describe('sendRequest', () => {
-  it('classifies an Undici connect timeout as a timeout', async () => {
-    const dispatcher = new MockAgent();
-    dispatcher.disableNetConnect();
-    vi.spyOn(dispatcher, 'request').mockRejectedValue(new errors.ConnectTimeoutError());
-    const layer = NodeHttpClient.layerUndiciNoDispatcher.pipe(
-      Layer.provide(Layer.succeed(NodeHttpClient.Dispatcher, dispatcher)),
-    );
-    try {
-      const exit = await Effect.runPromiseExit(
-        Effect.gen(function* () {
-          const client = yield* HttpClient.HttpClient;
-          return yield* sendRequest(client, REQUEST, 'test:undici-timeout');
-        }).pipe(Effect.provide(layer)),
+  // Bun replaces Undici with a stub, so `MockAgent` has no dispatcher to stub there.
+  it.skipIf(process.versions.bun !== undefined)(
+    'classifies an Undici connect timeout as a timeout',
+    async () => {
+      const dispatcher = new MockAgent();
+      dispatcher.disableNetConnect();
+      vi.spyOn(dispatcher, 'request').mockRejectedValue(new errors.ConnectTimeoutError());
+      const layer = NodeHttpClient.layerUndiciNoDispatcher.pipe(
+        Layer.provide(Layer.succeed(NodeHttpClient.Dispatcher, dispatcher)),
       );
-      expect(exitMessage(exit)).toContain('UND_ERR_CONNECT_TIMEOUT');
-      expect(exitOutcome(exit)).toBe('timeout');
-    } finally {
-      await dispatcher.close();
-    }
-  });
+      try {
+        const exit = await Effect.runPromiseExit(
+          Effect.gen(function* () {
+            const client = yield* HttpClient.HttpClient;
+            return yield* sendRequest(client, REQUEST, 'test:undici-timeout');
+          }).pipe(Effect.provide(layer)),
+        );
+        expect(exitMessage(exit)).toContain('UND_ERR_CONNECT_TIMEOUT');
+        expect(exitOutcome(exit)).toBe('timeout');
+      } finally {
+        await dispatcher.close();
+      }
+    },
+  );
 
   it('returns the response of a successful request, whatever its status', async () => {
     const client = makeMockHttpClient(() => Effect.succeed(new Response('gone', { status: 404 })));
