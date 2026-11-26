@@ -5,7 +5,7 @@ catalog:
   '@effect/platform-node': 4.1.6
   '@effect/tsgo': 0.73.7
   '@types/node': 26.6.11
-  '@yieldkit/logger': ^0.1.1
+  '@yieldkit/logger': ^0.2.0
   '@yieldkit/oxlint-config': 0.5.0
   effect: 4.1.6
   typescript: ^7.0.2
@@ -23,7 +23,7 @@ peerDependencyRules:
 allowBuilds:
   esbuild: true
 minimumReleaseAgeExclude:
-  - '@yieldkit/logger@0.1.1'
+  - '@yieldkit/logger@0.2.0'
   - '@effect/tsgo@0.73.7'
   - 'vitest@5.1.2'
   - '@types/node@26.6.11'
