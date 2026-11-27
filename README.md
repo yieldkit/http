@@ -16,7 +16,7 @@ pnpm add @effect/platform-node   # for @yieldkit/http/node
 pnpm add @effect/platform-bun    # for @yieldkit/http/bun
 ```
 
-`effect` 4.1.6 or a later 4.1 patch is a peer dependency. The client builds on Effect's unstable `HttpClient`, `RateLimiter` and `CircuitBreaker` modules, so a new Effect minor version needs a release of this package. The platform packages are optional peers: install the one for the entry point you import, or neither if you bring your own `HttpClient`. Runs on Node 22.19+, 24.11+ or 26+, and on Bun.
+`effect` 4.1.7 or a later 4.1 patch is a peer dependency. The client builds on Effect's unstable `HttpClient`, `RateLimiter` and `CircuitBreaker` modules, so a new Effect minor version needs a release of this package. The platform packages are optional peers: install the one for the entry point you import, or neither if you bring your own `HttpClient`. Runs on Node 22.19+, 24.11+ or 26+, and on Bun.
 
 | Import                | Contents                                                                     |
 | --------------------- | ---------------------------------------------------------------------------- |
