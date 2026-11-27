@@ -31,7 +31,7 @@ export default defineConfig({
     rules: {
       ...oxlintConfig.rules,
       // `HttpClient`, `RateLimiter` and `CircuitBreaker` live in Effect's unstable and experimental
-      // modules; this package builds on them by design, so its `effect` peer range (`~4.1.6`) only
+      // modules; this package builds on them by design, so its `effect` peer range (`~4.1.7`) only
       // admits patch releases of the minor version it is tested against.
       'effecttsgo/unstable-api-usage': 'off',
       'effecttsgo/experimental-api-usage': 'off',

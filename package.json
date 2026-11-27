@@ -1,6 +1,6 @@
 {
   "name": "@yieldkit/http",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Resilient outbound HTTP for Effect: retries, rate limits, circuit breaking, ETag caching, an SSRF guard and credential redaction on Effect's HttpClient.",
   "keywords": [
     "circuit-breaker",
@@ -70,9 +70,9 @@
     "vite-plus": "catalog:"
   },
   "peerDependencies": {
-    "@effect/platform-bun": "~4.1.6",
-    "@effect/platform-node": "~4.1.6",
-    "effect": "~4.1.6"
+    "@effect/platform-bun": "~4.1.7",
+    "@effect/platform-node": "~4.1.7",
+    "effect": "~4.1.7"
   },
   "peerDependenciesMeta": {
     "@effect/platform-bun": {

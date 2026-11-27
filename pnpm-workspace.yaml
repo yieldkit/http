@@ -1,13 +1,13 @@
 catalogMode: prefer
 
 catalog:
-  '@effect/platform-bun': 4.1.6
-  '@effect/platform-node': 4.1.6
+  '@effect/platform-bun': 4.1.7
+  '@effect/platform-node': 4.1.7
   '@effect/tsgo': 0.73.7
   '@types/node': 26.6.11
-  '@yieldkit/logger': ^0.2.0
+  '@yieldkit/logger': ^0.3.0
   '@yieldkit/oxlint-config': 0.5.0
-  effect: 4.1.6
+  effect: 4.1.7
   typescript: ^7.0.2
   vite: npm:@voidzero-dev/vite-plus-core@8.3.8001
   vite-plus: 1.8.0
@@ -23,15 +23,15 @@ peerDependencyRules:
 allowBuilds:
   esbuild: true
 minimumReleaseAgeExclude:
-  - '@yieldkit/logger@0.2.0'
+  - '@yieldkit/logger@0.3.0'
   - '@effect/tsgo@0.73.7'
   - 'vitest@5.1.2'
   - '@types/node@26.6.11'
   - '@yieldkit/oxlint-config@0.5.0'
-  - 'effect@4.1.6'
-  - '@effect/platform-bun@4.1.6'
-  - '@effect/platform-node@4.1.6'
-  - '@effect/platform-node-shared@4.1.6'
+  - 'effect@4.1.7'
+  - '@effect/platform-bun@4.1.7'
+  - '@effect/platform-node@4.1.7'
+  - '@effect/platform-node-shared@4.1.7'
   - '@effect/tsgo-darwin-arm64@0.73.7'
   - '@effect/tsgo-darwin-x64@0.73.7'
   - '@effect/tsgo-linux-arm64@0.73.7'
